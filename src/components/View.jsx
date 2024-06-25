@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-
+import { HeadlessButton } from "@locoworks/reusejs-react-button";
+import { useNavigate } from 'react-router-dom';
 function View() {
     const [favPackage, setFavPackage] = useState([]);
     const [isEditing, setIsEditing] = useState(null);
     const [editReason, setEditReason] = useState('');
-
+       const navigate = useNavigate();
     useEffect(() => {
         const storedPackages = localStorage.getItem('favoritePackages');
         if (storedPackages) {
@@ -24,7 +25,10 @@ function View() {
         setIsEditing(pkg.name);
         setEditReason(pkg.reason);
     };
-
+    
+    const handleSubmit=()=>
+        {navigate('/view');
+        }
     const handleSave = (name) => {
         const updatedPackages = favPackage.map(pkg =>
             pkg.name === name ? { ...pkg, reason: editReason } : pkg
@@ -34,6 +38,8 @@ function View() {
         setIsEditing(null);
         setEditReason('');
     };
+
+    
 
     return (
         <>
@@ -94,10 +100,25 @@ function View() {
                                 </div>
                             </div>
                         )}
+
+<HeadlessButton
+                    onClick={handleSubmit}
+                    className="bg-blue-500 hover:bg-blue-700 text-white self-end mt-2 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+
+                >
+                    Add More
+                </HeadlessButton>
                     </div>
                 ) : (
                     <div className="border rounded p-4 text-center">
                         <p className="mb-4">No favorite packages saved.</p>
+                        <HeadlessButton
+                    onClick={handleSubmit}
+                    className="bg-blue-500 hover:bg-blue-700 text-white self-end mt-2 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+
+                >
+                    ADD NOW
+                </HeadlessButton>
                     </div>
                 )}
             </div>
